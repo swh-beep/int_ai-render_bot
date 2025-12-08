@@ -152,7 +152,16 @@ def generate_empty_room(image_path):
     print("   🔨 [1단계] 빈 방 만드는 중...", end="", flush=True)
     try:
         img = Image.open(image_path)
-        prompt = "IMAGE EDITING TASK (STRICT):\nCreate a photorealistic image of this room but completely EMPTY.\nACTIONS:\n1. REMOVE ALL furniture, rugs, decor, and lighting.\n2. REMOVE ALL window treatments.\n3. KEEP the original floor, walls, ceiling, and windows EXACTLY as they are.\n4. IN-PAINT the removed areas seamlessly.\nOUTPUT RULE: Return ONLY the generated image."
+        prompt = (
+            "IMAGE EDITING TASK (STRICT):\n"
+            "Create a photorealistic image of this room but completely EMPTY.\n"
+            "ACTIONS:\n"
+            "1. REMOVE ALL furniture, rugs, decor, and lighting.\n"
+            "2. REMOVE ALL window treatments (curtains, blinds). Show bare windows.\n"
+            "3. KEEP the original floor, walls, ceiling, and windows EXACTLY as they are.\n"
+            "4. IN-PAINT the removed areas seamlessly.\n"
+            "OUTPUT RULE: Return ONLY the generated image."
+        )
         model = genai.GenerativeModel(MODEL_NAME)
         response = model.generate_content([prompt, img])
         
@@ -170,8 +179,42 @@ def generate_furnished(empty_path, moodboard_path):
     print(f"   🎨 [2단계] 가구 배치 중...", end="", flush=True)
     try:
         room_img = Image.open(empty_path)
-        prompt = "IMAGE GENERATION TASK (Virtual Staging):\nFurnish the empty room using the furniture styles shown in the Moodboard.\n<CRITICAL: DO NOT COPY PASTE>\n1. RE-ARRANGE: Do NOT copy the layout. Place furniture into the room's 3D space anew.\n2. NO TEXT LABELS: IGNORE all text in the moodboard.\n3. REMOVE BACKGROUND: Only extract the furniture items.\n<LIGHTING INSTRUCTION: TURN ON ALL LIGHTS>\n1. ACTIVATE LIGHTING: Identify items labeled as 'pendant/floor/table/wall lighting'.\n2. STATE: All lighting fixtures MUST be TURNED ON (Warm 3000K).\n3. EMISSIVE: Light bulbs must look glowing.\n<MANDATORY WINDOW TREATMENT>\n- Install pure WHITE CHIFFON CURTAINS (Sheer).\n<DESIGN INSTRUCTIONS>\n1. PERSPECTIVE MATCH: Align with floor grid and vanishing points.\n2. PLACEMENT: Realistic placement.\n3. SCALE: Realistic sizing.\nOUTPUT RULE: Return ONLY the generated interior image."
-        
+        prompt = (
+           "IMAGE GENERATION TASK (Virtual Staging):\n"
+            "Furnish the empty room using the furniture styles shown in the Moodboard.\n\n"
+
+            "<CRITICAL: STRUCTURAL PRESERVATION>\n"
+            "1. CAMERA LOCK: Maintain the EXACT SAME camera angle, zoom, and perspective as the original image. Do NOT shift, crop, or rotate the view.\n"
+            "2. GEOMETRY FREEZE: The structural lines (corners, windows, ceiling, floor) MUST remain pixel-perfectly aligned with the original.\n"
+            "3. IN-PAINTING ONLY: Only remove furniture and fill in the background. Do NOT redesign the room architecture.\n\n"
+
+            "<CRITICAL: DIMENSION & SCALE RULES>\n"
+            "1. READ TEXT: You MUST read the dimensions written on the moodboard (e.g., 'Width 1600mm', 'Height 800mm').\n"
+            "2. APPLY RATIO: Adjust the aspect ratio of the furniture based on the read dimensions. (e.g., A 2000mm sofa must be visibly longer than a 1000mm table).\n"
+            "3. REALISTIC SCALING: Place the furniture in the room with accurate scale relative to the room's ceiling height (assume 2400mm ceiling).\n"
+            "4. NO DISTORTION: Do not stretch or squash the furniture to fit the space. Keep the original proportions.\n\n"
+
+            "<CRITICAL: DO NOT COPY PASTE>\n"
+            "1. RE-ARRANGE: Do NOT copy the layout or composition of the moodboard. Place furniture into the room's 3D space anew.\n"
+            "2. NO TEXT LABELS: IGNORE all text in the moodboard for rendering. Do NOT write any text in the final image.\n"
+            "3. REMOVE BACKGROUND: Do NOT paste the white background of the moodboard. Only extract the furniture items.\n\n"
+
+            "<LIGHTING INSTRUCTION: TURN ON ALL LIGHTS>\n"
+            "1. ACTIVATE LIGHTING: Identify items labeled as 'pendant/floor/table/wall lighting'.\n"
+            "2. STATE: All lighting fixtures MUST be TURNED ON.\n"
+            "3. COLOR TEMPERATURE: Use 4000K Neutral White light.\n"
+            "4. EMISSIVE MATERIAL: The light bulbs/shades must look bright and glowing (Emissive).\n"
+            "5. AMBIENT GLOW: Ensure the lights cast a soft glow on the surrounding walls and floor.\n\n"
+
+            "<MANDATORY WINDOW TREATMENT>\n"
+            "- Install pure WHITE CHIFFON CURTAINS on all windows.\n"
+            "- They must be SHEER (80% transparency), allowing natural light.\n\n"
+
+            "<DESIGN INSTRUCTIONS>\n"
+            "1. PERSPECTIVE MATCH: Align the furniture with the floor grid and vanishing points of the empty room.\n"
+            "2. PLACEMENT: Realistic placement.\n"
+            "OUTPUT RULE: Return ONLY the generated interior image. No text, no moodboard layout."
+        )        
         input_content = [prompt, "Background Empty Room:", room_img]
         if moodboard_path:
             try:
@@ -209,11 +252,11 @@ def upscale_image(image_path):
             "image": b64, 
             "scale_factor": "2x", 
             "optimized_for": "standard",
-            "prompt": "high quality, 4k, realistic interior, photorealistic",
-            "creativity": 2, 
-            "hdr": 4, 
+            "prompt": "realistic interior, highly detailed, photorealistic",
+            "creativity": 1, 
+            "hdr": 2, 
             "resemblance": 4, 
-            "fractality": 3, 
+            "fractality": 2, 
             "engine": "automatic"
         }
         headers = {
