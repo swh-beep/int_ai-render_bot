@@ -20,8 +20,20 @@ ID_INBOX   = '1cYHh2k40_vyasnu__LbesA4WwAJOsSFo'
 ID_DRAFT   = '1qMKhGRMXNHK98d7dIPLzandxCv6eEESt'
 ID_ARCHIVE = '1MumtL0X8FslSW2r-oh7B2NMmJGsmCLeU'  # 처리된 원본 보관용
 
-# 구글 서비스 계정 키 파일
-SERVICE_ACCOUNT_FILE = 'service_account.json'
+# ---------------------------------------------------------
+# [설정] 구글 서비스 계정 키 파일 찾기 (로컬/Render 겸용)
+# ---------------------------------------------------------
+# 1. 같은 폴더에 있는지 확인 (로컬 개발용)
+if os.path.exists('service_account.json'):
+    SERVICE_ACCOUNT_FILE = 'service_account.json'
+# 2. Render 비밀 폴더에 있는지 확인 (Render 서버용)
+elif os.path.exists('/etc/secrets/service_account.json'):
+    SERVICE_ACCOUNT_FILE = '/etc/secrets/service_account.json'
+else:
+    # 파일이 없으면 에러 발생시키지 말고 로그만 남김
+    print("🚨 [비상] service_account.json 파일을 찾을 수 없습니다!")
+    print("   -> Render 설정의 'Secret Files'에 파일을 등록했는지 확인하세요.")
+    SERVICE_ACCOUNT_FILE = None
 
 # AI 모델 설정
 load_dotenv()
