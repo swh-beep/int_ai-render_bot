@@ -3,3 +3,6 @@ __pycache__/
 outputs/
 *.pyc
 .DS_Store
+service_account.json
+service_account.json
+service_account.json

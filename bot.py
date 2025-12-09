@@ -189,10 +189,9 @@ def generate_furnished(empty_path, moodboard_path):
             "3. IN-PAINTING ONLY: Only remove furniture and fill in the background. Do NOT redesign the room architecture.\n\n"
 
             "<CRITICAL: DIMENSION & SCALE RULES>\n"
-            "1. READ TEXT: You MUST read the dimensions written on the moodboard (e.g., 'Width 1600mm', 'Height 800mm').\n"
-            "2. APPLY RATIO: Adjust the aspect ratio of the furniture based on the read dimensions. (e.g., A 2000mm sofa must be visibly longer than a 1000mm table).\n"
-            "3. REALISTIC SCALING: Place the furniture in the room with accurate scale relative to the room's ceiling height (assume 2400mm ceiling).\n"
-            "4. NO DISTORTION: Do not stretch or squash the furniture to fit the space. Keep the original proportions.\n\n"
+            "1. READ TEXT: You MUST read the names written on the moodboard (e.g., sofa, bed, light, chair).\n"
+            "2. REALISTIC SCALING: Place the furniture in the room with accurate scale relative to the room's ceiling height (assume 2400mm ceiling).\n"
+            "3. NO DISTORTION: Do not stretch or squash the furniture to fit the space. Keep the original proportions.\n\n"
 
             "<CRITICAL: DO NOT COPY PASTE>\n"
             "1. RE-ARRANGE: Do NOT copy the layout or composition of the moodboard. Place furniture into the room's 3D space anew.\n"
@@ -202,13 +201,13 @@ def generate_furnished(empty_path, moodboard_path):
             "<LIGHTING INSTRUCTION: TURN ON ALL LIGHTS>\n"
             "1. ACTIVATE LIGHTING: Identify items labeled as 'pendant/floor/table/wall lighting'.\n"
             "2. STATE: All lighting fixtures MUST be TURNED ON.\n"
-            "3. COLOR TEMPERATURE: Use 4000K Neutral White light.\n"
+            "3. COLOR TEMPERATURE: Use 4000K White light.\n"
             "4. EMISSIVE MATERIAL: The light bulbs/shades must look bright and glowing (Emissive).\n"
             "5. AMBIENT GLOW: Ensure the lights cast a soft glow on the surrounding walls and floor.\n\n"
 
             "<MANDATORY WINDOW TREATMENT>\n"
             "- Install pure WHITE CHIFFON CURTAINS on all windows.\n"
-            "- They must be SHEER (80% transparency), allowing natural light.\n\n"
+            "- They must be SHEER (90% transparency), allowing natural light.\n\n"
 
             "<DESIGN INSTRUCTIONS>\n"
             "1. PERSPECTIVE MATCH: Align the furniture with the floor grid and vanishing points of the empty room.\n"
